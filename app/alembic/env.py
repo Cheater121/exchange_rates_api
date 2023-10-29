@@ -1,16 +1,13 @@
 import os
 import sys
-
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from alembic import context
-
 from app.core.config import settings
 from app.db.database import Base
-from app.db.models import Currency, Rate
 
 sys.path.append(os.path.join(sys.path[0], 'app'))
 

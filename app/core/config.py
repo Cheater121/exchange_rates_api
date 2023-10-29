@@ -8,7 +8,13 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_PASS: str
     DATABASE_URL: str
+
     EXCHANGE_API_KEY: str
+
+    POSTGRES_DB: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+
     MODE: str
 
     class Config:
