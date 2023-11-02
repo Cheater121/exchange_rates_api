@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     container_name: exchange_rates_api
-    command: ["/exchange_rates_api/docker/app.sh"]
+    command: ["/exchange_rates_api/docker/wait-for-db.sh", "db:3131", "--", "/exchange_rates_api/docker/app.sh"]
     restart: always
     ports:
       - 8001:8000
