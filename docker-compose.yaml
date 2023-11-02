@@ -2,7 +2,7 @@ version: "3"
 services:
   db:
     image: postgres:16
-    container_name: db_app
+    container_name: db
     command: -p 3131
     restart: always
 #    volumes:
