@@ -24,6 +24,11 @@ services:
       - 8001:8000
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "nc", "-z", "db", "3131"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
 #volumes:
 #  postrges:
