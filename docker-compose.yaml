@@ -7,11 +7,16 @@ services:
 #    volumes:
 #      - "postgres:/var/lib/postgresql/data"
     ports:
-      - 5432:5432
+      - 3131:5432
     expose:
-      - 5432
+      - 3131
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "3131", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 30 
 
   app:
     build:
@@ -19,14 +24,15 @@ services:
     env_file:
       - .env
     container_name: exchange_rates_api
-    command: ["/exchange_rates_api/docker/app.sh"]
     restart: always
     ports:
       - 8001:8000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: ["/exchange_rates_api/docker/app.sh"] 
     healthcheck:
-      test: ["CMD", "nc", "-z", "db", "5432"]
+      test: ["CMD", "nc", "-z", "db", "3131"]
       interval: 10s
       timeout: 5s
       retries: 30
