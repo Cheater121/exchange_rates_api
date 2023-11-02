@@ -3,14 +3,13 @@ services:
   db:
     image: postgres:16
     container_name: db
-#    command: -p 3131
     restart: always
 #    volumes:
 #      - "postgres:/var/lib/postgresql/data"
     ports:
-      - 3131:5432
+      - 5432:5432
     expose:
-      - 3131
+      - 5432
     env_file:
       - .env
 
@@ -20,14 +19,14 @@ services:
     env_file:
       - .env
     container_name: exchange_rates_api
-    command: ["/exchange_rates_api/docker/wait-for-db.sh", "db:3131", "--", "/exchange_rates_api/docker/app.sh"]
+    command: ["/exchange_rates_api/docker/app.sh"]
     restart: always
     ports:
       - 8001:8000
     depends_on:
       - db
     healthcheck:
-      test: ["CMD", "nc", "-z", "db", "3131"]
+      test: ["CMD", "nc", "-z", "db", "5432"]
       interval: 10s
       timeout: 5s
       retries: 30
