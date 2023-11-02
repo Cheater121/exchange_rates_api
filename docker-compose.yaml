@@ -7,8 +7,8 @@ services:
     command: -p 3131
 #    volumes:
 #      - "postgres:/var/lib/postgresql/data"
-    ports:
-      - 3131:5432
+#    ports:
+#      - 3131:5432
     expose:
       - 3131
     env_file:
