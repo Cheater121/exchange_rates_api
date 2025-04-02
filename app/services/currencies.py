@@ -4,22 +4,24 @@ from app.utils.unitofwork import IUnitOfWork
 
 
 class CurrencyService:
-    async def add_currency(self, uow: IUnitOfWork, currency: CurrencyToDB) -> int:
+    def __init__(self, uow: IUnitOfWork):
+        self.uow = uow
+
+    async def add_currency(self, currency: CurrencyToDB) -> int:
         currency_dict: dict = currency.model_dump()
-        async with uow:
+        async with self.uow as uow:
             currency_id_from_db = await uow.currency.add_one(currency_dict)
             await uow.commit()
             return currency_id_from_db
 
-    async def get_currency(self, uow: IUnitOfWork, code: str) -> CurrencyFromDB:
-        async with uow:
+    async def get_currency(self, code: str) -> CurrencyFromDB:
+        async with self.uow as uow:
             currency = await uow.currency.find_one(code=code)
             return currency
 
     async def convert_currencies(self,
-                                 uow: IUnitOfWork,
                                  currencies_to_exchange: CurrenciesToExchange) -> ConvertedCurrencies:
-        async with uow:
+        async with self.uow as uow:
             from_currency_rate = await uow.currency.find_latest_rate(currencies_to_exchange.from_currency_code)
             to_currency_rate = await uow.currency.find_latest_rate(currencies_to_exchange.to_currency_code)
 
