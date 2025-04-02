@@ -6,8 +6,8 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.core.config import settings
 from app.db.database import Base
+from app.db.models import Currency, Rate  # noqa
 from main import app
-from app.db.models import Currency, Rate
 
 
 TEST_DATABASE_URL = settings.DATABASE_URL
@@ -51,8 +51,9 @@ async def test_get_last_update_datetime():
 
 async def test_convert_currencies():
     async with AsyncClient(app=app, base_url="http://127.0.0.1:8000") as ac:
-        response = await ac.post("/api/convert",
-                                 json={"from_currency_code": "USD", "to_currency_code": "EUR", "count": 10})
+        response = await ac.post(
+            "/api/convert", json={"from_currency_code": "USD", "to_currency_code": "EUR", "count": 10}
+        )
 
     assert response.status_code == 200
     assert response.json().get("from_currency_code") == "USD"

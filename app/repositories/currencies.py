@@ -11,7 +11,7 @@ class CurrencyRepository(SQLAlchemyRepository):
 
     async def find_latest_rate(self, code: str):
         """This method will find by currency code one currency with joined latest rate and return rate"""
-        query = '''
+        query = """
                 SELECT
                     currency.id AS currency_id,
                     currency.name AS currency_name,
@@ -36,7 +36,7 @@ class CurrencyRepository(SQLAlchemyRepository):
                     AND rate.updated_at = max_rates.max_updated_at
                 WHERE
                     currency.code = :code;
-                '''
+                """
         res = await self.session.execute(text(query).bindparams(code=code))
         row = res.fetchone()
         if row:

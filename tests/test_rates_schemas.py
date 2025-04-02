@@ -1,7 +1,8 @@
-import pytest
 import datetime
 
-from app.api.schemas.rates import RateFromDB, RatesUpdateStatus, RateFromAPI
+import pytest
+
+from app.api.schemas.rates import RateFromAPI, RateFromDB, RatesUpdateStatus
 
 
 def test_rate_from_db_model():

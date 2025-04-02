@@ -4,11 +4,12 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.exc import IntegrityError
 
 from app.api.dependencies.dependencies import get_currency_service, get_rate_service
-from app.api.schemas.currencies import CurrenciesToExchange, ConvertedCurrencies, CurrencyToDB
-from app.api.schemas.rates import RatesUpdateStatus, RateFromAPI, RatesLastUpdateResponse
+from app.api.schemas.currencies import ConvertedCurrencies, CurrenciesToExchange, CurrencyToDB
+from app.api.schemas.rates import RateFromAPI, RatesLastUpdateResponse, RatesUpdateStatus
 from app.services.currencies import CurrencyService
 from app.services.network import NetworkServiceV2
 from app.services.rate import RateService
+
 
 router = APIRouter(
     prefix="/api",
@@ -17,8 +18,10 @@ router = APIRouter(
 
 
 @router.get("/update_rates", response_model=RatesUpdateStatus)
-async def update_rates(currency_service: CurrencyService = Depends(get_currency_service),
-                       rate_service: RateService = Depends(get_rate_service)):
+async def update_rates(
+    currency_service: CurrencyService = Depends(get_currency_service),
+    rate_service: RateService = Depends(get_rate_service),
+):
     currencies_list: list[CurrencyToDB] = await NetworkServiceV2().fetch_currencies()
     rates_list: list[RateFromAPI] = await NetworkServiceV2().fetch_rates()
 
@@ -40,7 +43,8 @@ async def get_last_update_datetime(rate_service: RateService = Depends(get_rate_
 
 
 @router.post("/convert", response_model=ConvertedCurrencies)
-async def convert_currencies(currencies_to_exchange: CurrenciesToExchange,
-                             currency_service: CurrencyService = Depends(get_currency_service)):
+async def convert_currencies(
+    currencies_to_exchange: CurrenciesToExchange, currency_service: CurrencyService = Depends(get_currency_service)
+):
     converted_currencies = await currency_service.convert_currencies(currencies_to_exchange)
     return converted_currencies

@@ -1,4 +1,4 @@
-from app.api.schemas.currencies import CurrencyToDB, CurrencyFromDB, CurrenciesToExchange, ConvertedCurrencies
+from app.api.schemas.currencies import ConvertedCurrencies, CurrenciesToExchange, CurrencyFromDB, CurrencyToDB
 from app.errors.exceptions import BadCurrencyCode, CurrencyZeroRate
 from app.utils.unitofwork import IUnitOfWork
 
@@ -19,8 +19,7 @@ class CurrencyService:
             currency = await uow.currency.find_one(code=code)
             return currency
 
-    async def convert_currencies(self,
-                                 currencies_to_exchange: CurrenciesToExchange) -> ConvertedCurrencies:
+    async def convert_currencies(self, currencies_to_exchange: CurrenciesToExchange) -> ConvertedCurrencies:
         async with self.uow as uow:
             from_currency_rate = await uow.currency.find_latest_rate(currencies_to_exchange.from_currency_code)
             to_currency_rate = await uow.currency.find_latest_rate(currencies_to_exchange.to_currency_code)
@@ -33,8 +32,9 @@ class CurrencyService:
             except ZeroDivisionError:
                 raise CurrencyZeroRate
 
-            return ConvertedCurrencies(from_currency_code=currencies_to_exchange.from_currency_code,
-                                       to_currency_code=currencies_to_exchange.to_currency_code,
-                                       count=currencies_to_exchange.count,
-                                       value=value
-                                       )
+            return ConvertedCurrencies(
+                from_currency_code=currencies_to_exchange.from_currency_code,
+                to_currency_code=currencies_to_exchange.to_currency_code,
+                count=currencies_to_exchange.count,
+                value=value,
+            )

@@ -8,5 +8,6 @@ from app.utils.unitofwork import IUnitOfWork, UnitOfWork
 async def get_currency_service(uow: IUnitOfWork = Depends(UnitOfWork)) -> CurrencyService:
     return CurrencyService(uow)
 
+
 async def get_rate_service(uow: IUnitOfWork = Depends(UnitOfWork)) -> RateService:
     return RateService(uow)

@@ -1,11 +1,9 @@
-import uvicorn
 from fastapi import FastAPI
 
 from app.api.routers.routers import all_routers
 
-app = FastAPI(
-    title="Currency Exchange Rates API"
-)
+
+app = FastAPI(title="Currency Exchange Rates API")
 
 for router in all_routers:
     app.include_router(router)

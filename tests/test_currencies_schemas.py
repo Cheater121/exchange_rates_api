@@ -1,7 +1,15 @@
-import pytest
-from app.api.schemas.currencies import CurrenciesToExchange, ConvertedCurrencies, CurrencyToDB, CurrencyFromDB, \
-    CurrencyWithRates, RateFromDB
 import datetime
+
+import pytest
+
+from app.api.schemas.currencies import (
+    ConvertedCurrencies,
+    CurrenciesToExchange,
+    CurrencyFromDB,
+    CurrencyToDB,
+    CurrencyWithRates,
+    RateFromDB,
+)
 
 
 def test_currencies_to_exchange_model():
