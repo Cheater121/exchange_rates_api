@@ -40,6 +40,7 @@ class UnitOfWork:
 
         self.currency = CurrencyRepository(self.session)
         self.rate = RateRepository(self.session)
+        return self
 
     async def __aexit__(self, *args):
         await self.rollback()
