@@ -1,0 +1,4 @@
+[flake8]
+exclude = __init__.py,.venv,alembic,docker,.git,__pycache__
+max-line-length = 120
+ignore = E203, E266, E501, W503
